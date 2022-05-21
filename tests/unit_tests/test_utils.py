@@ -1,5 +1,6 @@
 from src.utils import get_emails_from_website_text, get_links_from_website_text
 import pytest
+from pytest_lazyfixture import lazy_fixture
 import codecs
 from pathlib import Path
 
@@ -38,13 +39,15 @@ def expected_links() -> dict:
             "page b": {"http://c.html"}}
 
 
-def test_get_emails_from_website_test(page_a, page_b, page_c, expected_email_per_page):
-    for page, page_name in zip([page_a, page_b, page_c], ['page a', 'page b', 'page c']):
-        emails = get_emails_from_website_text(page)
-        assert emails == expected_email_per_page[page_name]
+@pytest.mark.parametrize("page, page_name", [(lazy_fixture('page_a'), "page a"), (lazy_fixture('page_b'), 'page b'),
+                                             (lazy_fixture('page_c'), "page c")])
+def test_get_emails_from_website_test(page, page_name, expected_email_per_page):
+    emails = get_emails_from_website_text(page)
+    assert emails == expected_email_per_page[page_name]
 
 
-def test_get_links_from_website_text(page_a, page_b, page_c, expected_links):
-    for page, page_name in zip([page_a, page_b, page_c], ['page a', 'page b', 'page c']):
-        links = get_links_from_website_text(page)
-        assert links == expected_links[page_name]
+@pytest.mark.parametrize("page, page_name", [(lazy_fixture('page_a'), "page a"), (lazy_fixture('page_b'), 'page b'),
+                                             (lazy_fixture('page_c'), "page c")])
+def test_get_links_from_website_text(page, page_name, expected_links):
+    links = get_links_from_website_text(page)
+    assert links == expected_links[page_name]
