@@ -7,6 +7,7 @@ from math import inf
 from urlinfo import URLInfo
 import argparse
 from datetime import datetime
+from pathlib import Path
 from random import sample
 from tqdm import tqdm
 import pickle as pkl
@@ -67,15 +68,19 @@ def save_graph(graph):
 
 
 def handle_args(input_args: argparse.Namespace) -> Tuple[List[str], int]:
+    if input_args.input == '':
+        input_args.input = Path(__file__).parent.parent.joinpath('example_seed_urls.txt')
     with open(input_args.input) as input_file:
         seed_urls = [url.strip() for url in input_file.readlines()]
+    if input_args.early_stopping<1:
+        raise Exception("early stopping must be equal or greater than 1")
     return seed_urls, input_args.early_stopping
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--input', type=str, help='Path to text file containing seed urls.', required=False,
-                        default='../example_seed_urls.txt')
+                        default='')
     parser.add_argument('-s', '--early-stopping', type=int, required=False, default=inf,
                         help='Maximum URLs to scrape.')
     args = parser.parse_args()
