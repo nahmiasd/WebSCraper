@@ -7,22 +7,24 @@ from pathlib import Path
 dummy_web_pages_dir = Path(__file__).parent.joinpath('dummy_web_pages')
 
 
+def read_page(page_path: str) -> str:
+    page = codecs.open(str(dummy_web_pages_dir.joinpath(page_path)), 'r')
+    return page.read()
+
+
 @pytest.fixture
 def page_a() -> str:
-    page = codecs.open(dummy_web_pages_dir.joinpath('a.html'), 'r')
-    return page.read()
+    return read_page('a.html')
 
 
 @pytest.fixture
 def page_b() -> str:
-    page = codecs.open(dummy_web_pages_dir.joinpath('b.html'), 'r')
-    return page.read()
+    return read_page('b.html')
 
 
 @pytest.fixture
 def page_c() -> str:
-    page = codecs.open(dummy_web_pages_dir.joinpath('c.html'), 'r')
-    return page.read()
+    return read_page('c.html')
 
 
 @pytest.fixture
