@@ -75,7 +75,7 @@ def handle_args(input_args: argparse.Namespace) -> Tuple[List[str], int]:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--input', type=str, help='Path to text file containing seed urls.', required=False,
-                        default='example_seed_urls.txt')
+                        default='../example_seed_urls.txt')
     parser.add_argument('-s', '--early-stopping', type=int, required=False, default=inf,
                         help='Maximum URLs to scrape.')
     args = parser.parse_args()
